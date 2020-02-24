@@ -3,9 +3,18 @@ import 'package:formvalidation/src/bloc/login_bloc.dart';
 export 'package:formvalidation/src/bloc/login_bloc.dart';
 
 class Provider extends InheritedWidget {
-  final loginBloc = LoginBloc();
+  static Provider _instancia;
 
-  Provider({Key key, Widget child}) : super(key: key, child: child);
+  factory Provider({Key key, Widget child}) {
+    if (_instancia == null) {
+      _instancia = new Provider._internal(key: key, child: child);
+    }
+    return _instancia;
+  }
+
+  Provider._internal({Key key, Widget child}) : super(key: key, child: child);
+
+  final loginBloc = LoginBloc();
 
   //Condicion: Al actualizarse debe notificar a sus hijos. El 99% de los casos es cierto TRUE
   @override
