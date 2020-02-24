@@ -121,10 +121,12 @@ class LoginPage extends StatelessWidget {
           child: TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
-                hintText: 'ejemplo@correo.com',
-                labelText: 'Correo Electronico',
-                counterText: snapshot.data),
+              icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
+              hintText: 'ejemplo@correo.com',
+              labelText: 'Correo Electronico',
+              counterText: snapshot.data,
+              errorText: snapshot.error
+            ),
             onChanged: bloc.changeEmail,
           ),
         );
@@ -145,6 +147,7 @@ class LoginPage extends StatelessWidget {
               icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
               labelText: 'Contraseña',
               counterText: snapshot.data,
+              errorText: snapshot.error
             ),
             onChanged: bloc.changePassword,
           ),
@@ -155,7 +158,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _crearBoton() {
     return RaisedButton(
-      onPressed: () {},
+      onPressed: null,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
         child: Text('Ingresar'),
