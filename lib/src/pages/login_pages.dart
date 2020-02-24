@@ -154,7 +154,6 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _crearBoton(LoginBloc bloc) {
-    
     //formValidStream
     //Usar snapshot.hasData
     //true ? algo si true : algo si false
@@ -163,7 +162,7 @@ class LoginPage extends StatelessWidget {
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return RaisedButton(
-          onPressed: snapshot.hasData ? (){} : null,
+          onPressed: snapshot.hasData ? () => _login(bloc, context) : null,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
             child: Text('Ingresar'),
@@ -177,5 +176,14 @@ class LoginPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  _login(LoginBloc bloc, context) {
+    print('==================');
+    print('Email: ${bloc.email}');
+    print('Password: ${bloc.password}');
+    print('==================');
+
+    Navigator.pushReplacementNamed(context, 'home');
   }
 }
