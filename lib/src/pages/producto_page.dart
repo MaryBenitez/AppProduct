@@ -14,6 +14,9 @@ class ProductoPage extends StatefulWidget {
 }
 
 class _ProductoPageState extends State<ProductoPage> {
+  final formKey = GlobalKey<FormState>();
+  ProductoModel producto = new ProductoModel();
+  final productoProvider = new ProductosProviders();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
