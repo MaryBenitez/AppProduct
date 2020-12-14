@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/models/product_model.dart';
+import 'package:formvalidation/src/providers/productos_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
 
 //Variables globales
 final formKey = GlobalKey<FormState>();
 ProductoModel producto = new ProductoModel();
+final productoProvider = new ProductosProviders();
 
 class ProductoPage extends StatefulWidget {
   @override
@@ -111,4 +113,6 @@ _submit() {
   print(producto.titulo);
   print(producto.valor);
   print(producto.disponible);
+
+  productoProvider.crearProducto(producto);
 }
