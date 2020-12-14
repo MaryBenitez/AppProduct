@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:formvalidation/src/models/product_model.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
 
-//Variable global
+//Variables globales
 final formKey = GlobalKey<FormState>();
+ProductoModel producto = new ProductoModel();
 
 class ProductoPage extends StatefulWidget {
   @override
@@ -31,6 +33,7 @@ class _ProductoPageState extends State<ProductoPage> {
                 children: <Widget>[
                   _crearNombre(),
                   _crearPrecio(),
+                  _crearDispobible(),
                   _crearBoton(),
                 ],
               )),
@@ -42,8 +45,10 @@ class _ProductoPageState extends State<ProductoPage> {
   Widget _crearNombre() {
     //Trabaja directamente con un formulario, controlados el estado
     return TextFormField(
+      initialValue: producto.titulo,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(labelText: 'Producto'),
+      onSaved: (value) => producto.titulo = value,
       validator: (value) {
         if (value.length < 3) {
           return 'Ingrese el nombre del producto';
@@ -56,8 +61,10 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearPrecio() {
     return TextFormField(
+      initialValue: producto.valor.toString(),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(labelText: 'Precio'),
+      onSaved: (value) => producto.valor = double.parse(value),
       validator: (value) {
         if (utils.isNumeric(value)) {
           return null;
@@ -66,6 +73,16 @@ class _ProductoPageState extends State<ProductoPage> {
         }
       },
     );
+  }
+
+  Widget _crearDispobible() {
+    return SwitchListTile(
+        value: producto.disponible,
+        title: Text('Disponible'),
+        activeColor: Colors.deepPurple,
+        onChanged: (value) => setState(() {
+              producto.disponible = value;
+            }));
   }
 
   Widget _crearBoton() {
@@ -87,5 +104,11 @@ _submit() {
   if (!formKey.currentState.validate()) {
     return;
   }
-  print('TODO Ok');
+
+  //Lee la informacion que este dentro del formulario
+  formKey.currentState.save();
+
+  print(producto.titulo);
+  print(producto.valor);
+  print(producto.disponible);
 }
