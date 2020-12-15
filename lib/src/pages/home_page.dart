@@ -3,7 +3,12 @@ import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/models/product_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final productosProvider = new ProductosProviders();
 
   @override
@@ -29,7 +34,8 @@ class HomePage extends StatelessWidget {
 
             return ListView.builder(
               itemCount: productos.length, //Cantidad de productos
-              itemBuilder: (context, i) => _crearItem(context, productos[i]),
+              itemBuilder: (context, i) =>
+                  _crearItem(context, productos[i], productos, i),
             );
           } else {
             return Center(
@@ -39,7 +45,8 @@ class HomePage extends StatelessWidget {
         });
   }
 
-  Widget _crearItem(BuildContext context, ProductoModel producto) {
+  Widget _crearItem(BuildContext context, ProductoModel producto,
+      List<ProductoModel> prod, int position) {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
@@ -51,7 +58,11 @@ class HomePage extends StatelessWidget {
       child: ListTile(
           title: Text('${producto.titulo} - ${producto.valor}'),
           subtitle: Text(producto.id),
-          onTap: () => Navigator.pushNamed(context, 'producto')),
+          onTap: () =>
+              Navigator.pushNamed(context, 'producto', arguments: producto)
+                  .then((value) {
+                setState(() {});
+              })),
     );
   }
 
@@ -59,6 +70,8 @@ class HomePage extends StatelessWidget {
     return FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.deepPurple,
-        onPressed: () => Navigator.pushNamed(context, 'producto'));
+        onPressed: () => Navigator.pushNamed(context, 'producto').then((value) {
+              setState(() {});
+            }));
   }
 }
