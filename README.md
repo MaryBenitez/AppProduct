@@ -1,6 +1,8 @@
-#AppProduct
+# AppProduct
 
-##Versiones
+Aplicacion móvil desarrollada en flutter.
+
+## Versiones
 
 Version 1.0
 Uso de patrón BLoC para validar formularios (login).
