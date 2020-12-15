@@ -119,7 +119,7 @@ class _ProductoPageState extends State<ProductoPage> {
     );
   }
 
-  _submit() {
+  _submit() async {
     //Cuando el formulario NO es válido
     if (!formKey.currentState.validate()) {
       return;
@@ -132,6 +132,12 @@ class _ProductoPageState extends State<ProductoPage> {
     setState(() {
       _guardando = true;
     });
+
+    //foto
+    if (foto != null) {
+      //Actualizar en Firebase
+      producto.fotoUrl = await productoProvider.subirImagen(foto);
+    }
 
     if (producto.id == null) {
       productoProvider.crearProducto(producto);
