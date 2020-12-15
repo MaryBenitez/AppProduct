@@ -3,17 +3,18 @@ import 'package:formvalidation/src/models/product_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
 
-//Variables globales
-final formKey = GlobalKey<FormState>();
-ProductoModel producto = new ProductoModel();
-final productoProvider = new ProductosProviders();
-
 class ProductoPage extends StatefulWidget {
   @override
   _ProductoPageState createState() => _ProductoPageState();
 }
 
 class _ProductoPageState extends State<ProductoPage> {
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final productoProvider = new ProductosProviders();
+  ProductoModel producto = new ProductoModel();
+  bool _guardando = false;
+
   @override
   Widget build(BuildContext context) {
     final ProductoModel proData = ModalRoute.of(context).settings.arguments;
@@ -22,6 +23,7 @@ class _ProductoPageState extends State<ProductoPage> {
     }
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Producto'),
         actions: <Widget>[
@@ -94,7 +96,8 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearBoton() {
     return RaisedButton.icon(
-      onPressed: _submit,
+      //Bloqueo de boton si la se guardo la informacion
+      onPressed: (_guardando) ? null : _submit,
       label: Text('Guardar'),
       icon: Icon(Icons.save),
       shape: RoundedRectangleBorder(
@@ -104,24 +107,39 @@ class _ProductoPageState extends State<ProductoPage> {
       textColor: Colors.white,
     );
   }
-}
 
-_submit() {
-  //Cuando el formulario NO es válido
-  if (!formKey.currentState.validate()) {
-    return;
+  _submit() {
+    //Cuando el formulario NO es válido
+    if (!formKey.currentState.validate()) {
+      return;
+    }
+
+    //Lee la informacion que este dentro del formulario
+    formKey.currentState.save();
+
+    //Guardo información
+    setState(() {
+      _guardando = true;
+    });
+
+    if (producto.id == null) {
+      productoProvider.crearProducto(producto);
+    } else {
+      productoProvider.editarProducto(producto);
+    }
+
+    //Ya se guardo la informacion
+    mostrarSnackbar('REGISTRO GUARDADO');
+
+    Navigator.pop(context);
   }
 
-  //Lee la informacion que este dentro del formulario
-  formKey.currentState.save();
+  void mostrarSnackbar(String mensaje) {
+    final snackbar = SnackBar(
+      content: Text(mensaje),
+      duration: Duration(milliseconds: 1500),
+    );
 
-  print(producto.titulo);
-  print(producto.valor);
-  print(producto.disponible);
-
-  if (producto.id == null) {
-    productoProvider.crearProducto(producto);
-  } else {
-    productoProvider.editarProducto(producto);
+    scaffoldKey.currentState.showSnackBar(snackbar);
   }
 }
