@@ -4,11 +4,12 @@ Aplicacion móvil desarrollada en flutter.
 
 ## Versiones
 
-**Version 1.0**
-Uso de patrón BLoC para validar formularios (login).
+- **Version 1.0**
 
-**Versión 1.1**
+  Uso de patrón BLoC para validar formularios (login).
 
-***Se mantuvo fuera funcionamiento el login***
+- **Versión 1.1**
 
-Utilizacion de Firebase, CRUD para productos. El usuario puede tomar fotografías al producto o seleccionar una imagen desde su galería.
+  ***Se mantuvo fuera funcionamiento el login***
+
+  Utilizacion de Firebase, CRUD para productos. El usuario puede tomar fotografías al producto o seleccionar una imagen desde su galería.
