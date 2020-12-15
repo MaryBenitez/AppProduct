@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/models/product_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
+import 'package:image_picker/image_picker.dart';
 
 class ProductoPage extends StatefulWidget {
   @override
@@ -12,8 +15,10 @@ class _ProductoPageState extends State<ProductoPage> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final productoProvider = new ProductosProviders();
+
   ProductoModel producto = new ProductoModel();
   bool _guardando = false;
+  File foto;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +33,13 @@ class _ProductoPageState extends State<ProductoPage> {
         title: Text('Producto'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.photo_size_select_actual), onPressed: () {}),
-          IconButton(icon: Icon(Icons.camera_alt), onPressed: () {})
+            icon: Icon(Icons.photo_size_select_actual),
+            onPressed: _seleccionarFoto,
+          ),
+          IconButton(
+            icon: Icon(Icons.camera_alt),
+            onPressed: _tomarFoto,
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -40,6 +50,7 @@ class _ProductoPageState extends State<ProductoPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
+                  _mostrarFoto(),
                   _crearNombre(),
                   _crearPrecio(),
                   _crearDispobible(),
@@ -141,5 +152,34 @@ class _ProductoPageState extends State<ProductoPage> {
     );
 
     scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  _seleccionarFoto() async {
+    _procesarImage(ImageSource.gallery);
+  }
+
+  Widget _mostrarFoto() {
+    if (producto.fotoUrl != null) {
+      return Container();
+    } else {
+      return Image(
+        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
+        height: 300.0,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  _tomarFoto() async {
+    _procesarImage(ImageSource.camera);
+  }
+
+  _procesarImage(ImageSource origen) async {
+    foto = await ImagePicker.pickImage(source: origen);
+
+    if (foto != null) {
+      //limpieza
+    }
+    setState(() {});
   }
 }
