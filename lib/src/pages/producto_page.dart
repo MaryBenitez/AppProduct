@@ -166,16 +166,16 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _mostrarFoto() {
     if (producto.fotoUrl != null) {
-      return FadeInImage(
-          image: NetworkImage(producto.fotoUrl),
-          placeholder: AssetImage('assets/jar-loading.gif'),
-          fit: BoxFit.contain);
+      return Container();
     } else {
-      return Image(
-        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
-        height: 300.0,
-        fit: BoxFit.cover,
-      );
+      if (foto != null) {
+        return Image.file(
+          foto,
+          fit: BoxFit.cover,
+          height: 300.0,
+        );
+      }
+      return Image.asset('assets/no-image.png');
     }
   }
 
@@ -183,13 +183,19 @@ class _ProductoPageState extends State<ProductoPage> {
     _procesarImage(ImageSource.camera);
   }
 
-  _procesarImage(ImageSource origen) async {
-    foto = await ImagePicker.pickImage(source: origen);
+  _procesarImage(ImageSource origin) async {
+    final _picker = ImagePicker();
+
+    final pickedFile = await _picker.getImage(
+      source: origin,
+    );
+
+    foto = File(pickedFile.path);
 
     if (foto != null) {
-      //limpieza
       producto.fotoUrl = null;
     }
+
     setState(() {});
   }
 }
