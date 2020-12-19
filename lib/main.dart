@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prefs = new PreferenciasUsuario();
-    print(prefs.token);
+    //print(prefs.token);
 
     return Provider(
         child: MaterialApp(

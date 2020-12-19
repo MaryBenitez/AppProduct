@@ -26,8 +26,7 @@ class UsuarioProvider {
 
     Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-    //print(decodedResp);
-
+    //OBTENGO EL TOKEN
     if (decodedResp.containsKey('idToken')) {
       //Guardo en el dispositivo
       _prefs.token = decodedResp['idToken'];

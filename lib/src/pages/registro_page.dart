@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/providers/usuario_provider.dart';
+import 'package:formvalidation/src/utils/utils.dart' as utils;
 
 class RegistroPage extends StatelessWidget {
   final usuarioProvider = new UsuarioProvider();
@@ -185,8 +186,14 @@ class RegistroPage extends StatelessWidget {
     );
   }
 
-  _registro(LoginBloc bloc, context) {
-    usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
-    //Navigator.pushReplacementNamed(context, 'home');
+  _registro(LoginBloc bloc, context) async {
+    Map info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
+
+    //Ventana emergente de error
+    if (info['ok']) {
+      Navigator.pushReplacementNamed(context, 'login');
+    } else {
+      utils.mostrarAlerta(context, info['mensaje']);
+    }
   }
 }
