@@ -13,3 +13,7 @@ Aplicacion móvil desarrollada en flutter.
   ***Se mantuvo fuera funcionamiento el login***
 
   Utilizacion de Firebase, CRUD para productos. El usuario puede tomar fotografías al producto o seleccionar una imagen desde su galería.
+
+- **Versión 1.2**
+  
+  Manejo de token mediante Firebase. Autenticación para login, uso de token para las peticiones del CRUD.
