@@ -24,8 +24,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   rxdart: ^0.23.1
-  http: 
-  image_picker: ^0.6.7+15
+  http: ^0.12.2
+  image_picker: ^0.6.7+17
   mime_type:
 
 dev_dependencies:

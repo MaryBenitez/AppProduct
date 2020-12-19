@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
+import 'package:formvalidation/src/providers/usuario_provider.dart';
 
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
+  final usuarioProvider = new UsuarioProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +98,7 @@ class LoginPage extends StatelessWidget {
                 ]),
             child: Column(
               children: <Widget>[
-                Text('Ingreso', style: TextStyle(fontSize: 20.0)),
+                Text('Crear cuenta', style: TextStyle(fontSize: 20.0)),
                 SizedBox(height: 60.0),
                 _crearEmail(bloc),
                 SizedBox(height: 30.0),
@@ -106,10 +109,9 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-            child: Text('Crear una nueva cuenta'),
+            child: Text('¿Ya tienes cuenta? Login'),
             //Reemplazar la página por una nueva, que no se pueda regresar a la anterior
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, 'registro'),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
           ),
           SizedBox(height: 100.0)
         ],
@@ -167,7 +169,7 @@ class LoginPage extends StatelessWidget {
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return RaisedButton(
-          onPressed: snapshot.hasData ? () => _login(bloc, context) : null,
+          onPressed: snapshot.hasData ? () => _registro(bloc, context) : null,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
             child: Text('Ingresar'),
@@ -183,12 +185,8 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _login(LoginBloc bloc, context) {
-    print('==================');
-    print('Email: ${bloc.email}');
-    print('Password: ${bloc.password}');
-    print('==================');
-
-    Navigator.pushReplacementNamed(context, 'home');
+  _registro(LoginBloc bloc, context) {
+    usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
+    //Navigator.pushReplacementNamed(context, 'home');
   }
 }
