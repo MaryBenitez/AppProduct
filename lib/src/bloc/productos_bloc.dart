@@ -11,6 +11,8 @@ class ProductosBloc {
   final _productosProvider = new ProductosProviders();
 
   //Escuchar stream
+  Stream<List<ProductoModel>> get productosStream => _productosController;
+  Stream<bool> get cargando => _cargandoController.stream;
 
   //Carga productos
   void cargarProductos() async {

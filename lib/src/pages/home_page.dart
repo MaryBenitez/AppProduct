@@ -9,24 +9,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final productosProvider = new ProductosProviders();
-
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of(context);
+    final productosBloc = Provider.productosBloc(context);
+    productosBloc.cargarProductos();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
       ),
-      body: _crearListado(),
+      body: _crearListado(productosBloc),
       floatingActionButton: _crearboton(context),
     );
   }
 
-  Widget _crearListado() {
-    return FutureBuilder(
-        future: productosProvider.cargarProductos(),
+  Widget _crearListado(ProductosBloc productosBloc) {
+    return StreamBuilder(
+        stream: productosBloc.productosStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ProductoModel>> snapshot) {
           if (snapshot.hasData) {
@@ -34,8 +33,8 @@ class _HomePageState extends State<HomePage> {
 
             return ListView.builder(
               itemCount: productos.length, //Cantidad de productos
-              itemBuilder: (context, i) =>
-                  _crearItem(context, productos[i], productos, i),
+              itemBuilder: (context, i) => _crearItem(
+                  context, productos[i], productos, i, productosBloc),
             );
           } else {
             return Center(
@@ -46,14 +45,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _crearItem(BuildContext context, ProductoModel producto,
-      List<ProductoModel> prod, int position) {
+      List<ProductoModel> prod, int position, ProductosBloc productosBloc) {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
         color: Colors.red,
       ),
       onDismissed: (direccion) {
-        productosProvider.borrarProducto(producto.id);
+        //productosProvider.borrarProducto(producto.id);
+        productosBloc.borrarProducto(producto.id);
       },
       child: Card(
         child: Column(
